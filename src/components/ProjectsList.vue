@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import type { Project, ProjectStatus } from '@/models/project';
 import { useProjectsStore } from '@/stores/projects';
 import Badge from '@/ui/Badge.vue';
-import Button from '@/ui/Button.vue';
-import Modal from '@/ui/Modal.vue';
 import { formatDate } from '@/utils/formatDate';
-import { onMounted, ref } from 'vue';
+import { projectMap, statusMap } from '@/utils/projectMap';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
@@ -19,11 +19,6 @@ onMounted(async () => {
     store.fetchData()
 });
 
-const isOpen = ref(true);
-function updateIsOpen(value: boolean) {
-    isOpen.value = value;
-}
-
 </script>
 
 <template>
@@ -31,22 +26,18 @@ function updateIsOpen(value: boolean) {
         <table v-if="!store.isLoading && !store.error" class="projects-table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Tasks</th>
-                    <th>Status</th>
-                    <th>Created at</th>
+                    <th v-for="item in projectMap" :key="item">{{ item }}</th>
                 </tr>
             </thead>
             <tbody>
-                <tr @dblclick="goToProject(project.id)" class="project-row" v-for="project in store.projects"
+                <tr @click="goToProject(project.id)" class="project-row" v-for="project in store.projects"
                     :key="project.id">
                     <td>{{ project.id }}</td>
                     <td>{{ project.name }}</td>
                     <td>{{ project.tasksId.length }}</td>
                     <td>
                         <Badge :type="project.status">
-                            {{ project.status }}
+                            {{ statusMap[project.status] }}
                         </Badge>
                     </td>
                     <td>{{ formatDate(project.createdAt) }}</td>

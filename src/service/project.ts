@@ -8,4 +8,10 @@ export class ProjectService {
 
         return response.data;
     }
+
+    static async createProject(project: Project) {
+        const response = await client.post<Project>('/projects', project);
+
+        return response.data;
+    }
 }
