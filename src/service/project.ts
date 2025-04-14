@@ -1,0 +1,11 @@
+import { client } from "@/api/client";
+import type { Project } from "@/models/project";
+
+export class ProjectService {
+
+    static async getProjects() {
+        const response = await client.get<Project[]>('/projects');
+
+        return response.data;
+    }
+}

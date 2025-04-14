@@ -1,44 +1,28 @@
 <script setup lang="ts">
-import type { Project } from '@/models/project';
+import { useProjectsStore } from '@/stores/projects';
 import Badge from '@/ui/Badge.vue';
 import { formatDate } from '@/utils/formatDate';
-import { ref } from 'vue';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
 
 function goToProject(id: number) {
-    console.log(id);
     router.push(`/projects/${id}`);
 }
 
-const projects = ref<Project[]>([{
-    id: 1,
-    name: 'Project A',
-    status: 'in_progress',
-    createdAt: new Date(),
-    description: 'Sample project A description',
-    tasks: [],
-}, {
-    id: 2,
-    name: 'Project B',
-    status: 'completed',
-    createdAt: new Date(),
-    description: 'Sample project A description',
-    tasks: [],
-}, {
-    id: 3,
-    name: 'Project C',
-    status: 'in_progress',
-    createdAt: new Date(),
-    description: 'Sample project A description',
-    tasks: [],
-}]);
+const store = useProjectsStore();
+// const { projects, isLoading, fetchData, error } = store;
+
+onMounted(async () => {
+    store.fetchData()
+});
+
 </script>
 
 <template>
     <div class="projects-table-container">
-        <table class="projects-table">
+        <table v-if="!store.isLoading && !store.error" class="projects-table">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -49,7 +33,7 @@ const projects = ref<Project[]>([{
                 </tr>
             </thead>
             <tbody>
-                <tr @click="goToProject(project.id)" class="project-row" v-for="project in projects" :key="project.id">
+                <tr @click="goToProject(project.id)" class="project-row" v-for="project in store.projects" :key="project.id">
                     <td>{{ project.id }}</td>
                     <td>{{ project.name }}</td>
                     <td>{{ project.tasks.length }}</td>

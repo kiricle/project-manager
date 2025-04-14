@@ -1,21 +1,29 @@
 {
   "projects": [
     {
-      "id": "1",
+      "id": 1,
       "name": "Project A",
       "description": "Test",
-      "status": "Active",
-      "createdAt": "2023-01-01"
+      "status": "completed",
+      "createdAt": "2023-01-01",
+      "tasks": []
+    },
+    {
+      "id": 2,
+      "name": "Project B",
+      "description": "John",
+      "status": "in_progress",
+      "createdAt": "2023-12-31",
+      "tasks": []
+    },
+    {
+      "id": 3,
+      "name": "Project C",
+      "description": "John",
+      "status": "in_progress",
+      "createdAt": "2025-04-14",
+      "tasks": []
     }
   ],
-  "tasks": [
-    {
-      "id": "1",
-      "projectId": 1,
-      "title": "Task 1",
-      "assignee": "John",
-      "status": "To Do",
-      "dueDate": "2023-12-31"
-    }
-  ]
+  "tasks": []
 }
