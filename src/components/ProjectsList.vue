@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useProjectsStore } from '@/stores/projects';
 import Badge from '@/ui/Badge.vue';
+import Button from '@/ui/Button.vue';
+import Modal from '@/ui/Modal.vue';
 import { formatDate } from '@/utils/formatDate';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter()
@@ -12,11 +14,15 @@ function goToProject(id: number) {
 }
 
 const store = useProjectsStore();
-// const { projects, isLoading, fetchData, error } = store;
 
 onMounted(async () => {
     store.fetchData()
 });
+
+const isOpen = ref(true);
+function updateIsOpen(value: boolean) {
+    isOpen.value = value;
+}
 
 </script>
 
@@ -33,10 +39,11 @@ onMounted(async () => {
                 </tr>
             </thead>
             <tbody>
-                <tr @click="goToProject(project.id)" class="project-row" v-for="project in store.projects" :key="project.id">
+                <tr @dblclick="goToProject(project.id)" class="project-row" v-for="project in store.projects"
+                    :key="project.id">
                     <td>{{ project.id }}</td>
                     <td>{{ project.name }}</td>
-                    <td>{{ project.tasks.length }}</td>
+                    <td>{{ project.tasksId.length }}</td>
                     <td>
                         <Badge :type="project.status">
                             {{ project.status }}

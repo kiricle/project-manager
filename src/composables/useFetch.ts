@@ -10,7 +10,6 @@ export const useFetch = <T>(initialValue: T, fetcher: () => Promise<T>) => {
             isLoading.value = true;
             error.value = null;
             result.value = await fetcher();
-            console.log(result.value)
         } catch (err) {
             error.value = (err as Error).message || 'Failed to fetch data';
         } finally {

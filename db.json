@@ -6,7 +6,7 @@
       "description": "Test",
       "status": "completed",
       "createdAt": "2023-01-01",
-      "tasks": []
+      "tasksId": []
     },
     {
       "id": 2,
@@ -14,7 +14,10 @@
       "description": "John",
       "status": "in_progress",
       "createdAt": "2023-12-31",
-      "tasks": []
+      "tasksId": [
+        1,
+        2
+      ]
     },
     {
       "id": 3,
@@ -22,8 +25,10 @@
       "description": "John",
       "status": "in_progress",
       "createdAt": "2025-04-14",
-      "tasks": []
+      "tasksId": []
     }
   ],
-  "tasks": []
+  "tasks": [
+    {}
+  ]
 }

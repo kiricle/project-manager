@@ -4,7 +4,7 @@ export interface Project {
     description: string;
     createdAt: Date;
     status: ProjectStatus;
-    tasks: Task[];
+    tasksId: number[];
 }
 
 export type ProjectStatus = 'in_progress' | 'completed';
