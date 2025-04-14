@@ -1,0 +1,21 @@
+{
+    "projects": [
+        {
+            "id": 1,
+            "name": "Project A",
+            "description": "Test",
+            "status": "Active",
+            "createdAt": "2023-01-01"
+        }
+    ],
+    "tasks": [
+        {
+            "id": 1,
+            "projectId": 1,
+            "title": "Task 1",
+            "assignee": "John",
+            "status": "To Do",
+            "dueDate": "2023-12-31"
+        }
+    ]
+}
