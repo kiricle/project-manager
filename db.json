@@ -68,5 +68,24 @@
       "tasksId": []
     }
   ],
-  "tasks": []
+  "tasks": [
+    {
+      "id": 1,
+      "name": "Task A",
+      "description": "Test",
+      "status": "done",
+      "createdAt": "2025-04-15T13:23:14.063Z",
+      "asigneeName": "John",
+      "projectId": 2
+    },
+    {
+      "id": 2,
+      "name": "Task B",
+      "description": "Test",
+      "status": "done",
+      "createdAt": "2025-04-15T13:23:14.063Z",
+      "asigneeName": "John",
+      "projectId": 2
+    }
+  ]
 }

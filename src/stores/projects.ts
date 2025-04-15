@@ -11,7 +11,7 @@ export const useProjectsStore = defineStore('projects', () => {
       id: projects.value.reduce((maxId, project) => Math.max(maxId, project.id), 0) + 1,
       ...project,
       status: 'in_progress',
-      createdAt: new Date(),
+      createdAt: new Date().toString(),
       tasksId: [],
     });
 

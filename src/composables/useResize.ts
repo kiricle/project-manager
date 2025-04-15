@@ -42,9 +42,5 @@ export const useResize = (selector: string, minWidth: number, maxWidth: number) 
 
     return {
         startResizing,
-        stopResizing,
-        resize,
-        resizingElement,
-        startPosX
     }
 }

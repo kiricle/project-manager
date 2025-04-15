@@ -4,7 +4,7 @@ export interface Project {
     id: number;
     name: string;
     description: string;
-    createdAt: Date;
+    createdAt: string;
     status: ProjectStatus;
     tasksId: number[];
 }
@@ -21,17 +21,19 @@ export const ProjectCreateSchema = z.object({
     description: z.string()
 })
 
-export type ColumnName = "To Do" | "In Progress" | "Done";
-
 export interface Task {
     id: number;
     name: string;
     assigneeName: string;
-    columnName: ColumnName;
-    order: number;
     status: TaskStatus;
     projectId: number;
+    order: number;
+    completeTo: string;
 }
 
-export type TaskStatus = 'in_progress' | 'completed';
+export interface PrintTask extends Omit<Task, 'status' | 'order' | 'projectId'> {
+
+}
+
+export type TaskStatus = "to_do" | "in_progress" | "done";
 
