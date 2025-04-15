@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useResize } from '@/composables/useResize';
 import type { Project } from '@/models/project';
 import { useProjectsStore } from '@/stores/projects';
 import Badge from '@/ui/Badge.vue';
+import Resizer from '@/ui/Table/Resizer.vue';
 import Table from '@/ui/Table/Table.vue';
 import { formatDate } from '@/utils/formatDate';
 import { projectMap, statusMap } from '@/utils/projectMap';
@@ -45,15 +47,52 @@ const changeSort = (key: keyof typeof projectMap) => {
     }
 }
 
+const { startResizing } = useResize('.th');
+
+// const resizingElement = ref<HTMLElement | null>(null)
+// const startPosX = ref<number>(0)
+
+// function startResizing(e: MouseEvent) {
+//     console.log('startResizing')
+//     const resizer = e.target as HTMLButtonElement;
+//     resizingElement.value = resizer.closest('.th') as HTMLElement;
+//     startPosX.value = e.clientX;
+
+
+//     console.log(startPosX.value)
+//     document.addEventListener('mouseup', stopResizing);
+//     document.addEventListener('mousemove', resize);
+// }
+
+// function stopResizing(e: MouseEvent) {
+//     console.log('stopResizing')
+
+//     document.removeEventListener('mousemove', resize);
+//     document.removeEventListener('mouseup', stopResizing);
+// }
+
+// function resize(e: MouseEvent) {
+//     if (!resizingElement.value) return;
+//     const currentWidth = resizingElement.value.offsetWidth;
+//     const calculatedWidth = currentWidth + (e.clientX - startPosX.value);
+//     if (calculatedWidth < 100) return;
+//     if (calculatedWidth > 500) return;
+
+//     resizingElement.value.style.width = `${currentWidth + (e.clientX - startPosX.value)}px`;
+//     startPosX.value = e.clientX;
+// }
+
 </script>
 
 <template>
     <Table>
         <template #header>
             <tr>
-                <th class="th" @click="changeSort(index)" v-for="(item, index) in projectMap" :key="item"
-                    :class="{ 'active': sortBy === index, 'desc': orderBy === 'desc' }">
-                    {{ item }}
+                <th class="th" @click="changeSort(index)" v-for="(item, index) in projectMap" :key="item">
+                    <div class="header_cell_divider">
+                        <p :class="{ 'active': sortBy === index, 'desc': orderBy === 'desc' }">{{ item }}</p>
+                        <Resizer @click.stop @mousedown="startResizing" />
+                    </div>
                 </th>
             </tr>
         </template>
@@ -79,6 +118,11 @@ $primary-color: #4a6fa5;
 $hover-color: #f5f7fa;
 $border-color: #e0e0e0;
 
+.header_cell_divider {
+    justify-content: space-between;
+    display: flex;
+}
+
 .th {
     padding: 12px 16px;
     text-align: left;
@@ -88,25 +132,29 @@ $border-color: #e0e0e0;
     position: relative;
     user-select: none;
     cursor: pointer;
+    min-width: 100px;
+    resize: horizontal;
 
     &:hover {
         background-color: darken(#f8f9fa, 2%);
     }
 
-    &.active {
+    .active {
+        position: relative;
+
         &::after {
             content: "▲";
             position: absolute;
-            right: 8px;
+            right: -13px;
             top: 50%;
             color: $primary-color;
             translate: 0 -50%;
             font-size: 0.8em;
-            transition: .3s transform;
+            transition: .3s rotate;
         }
 
         &.desc::after {
-            transform: rotate(180deg);
+            rotate: 180deg;
         }
     }
 }
