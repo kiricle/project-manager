@@ -55,10 +55,11 @@ const { startResizing } = useResize('.th', 100, 500);
     <Table>
         <template #header>
             <tr>
-                <th class="th" @click="changeSort(index)" v-for="(item, index) in projectMap" :key="item">
+                <th class="th" @click="changeSort(key)" v-for="(item, key) in projectMap" :key="item">
                     <div class="header_cell_divider">
-                        <p :class="{ 'active': sortBy === index, 'desc': orderBy === 'desc' }">{{ item }}</p>
-                        <Resizer @click.stop @mousedown="startResizing" />
+                        <p :class="{ 'active': sortBy === key, 'desc': orderBy === 'desc' }">{{ item }}</p>
+                        <Resizer v-if="key !== Object.keys(projectMap)[Object.keys(projectMap).length - 1]" @click.stop
+                            @mousedown="startResizing" />
                     </div>
                 </th>
             </tr>

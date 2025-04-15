@@ -5,7 +5,6 @@ export const useResize = (selector: string, minWidth: number, maxWidth: number) 
     const startPosX = ref<number>(0)
 
     function startResizing(e: MouseEvent) {
-        console.log('startResizing')
         const resizer = e.target as HTMLButtonElement;
         resizingElement.value = resizer.closest(selector) as HTMLElement;
         startPosX.value = e.clientX;
@@ -15,8 +14,6 @@ export const useResize = (selector: string, minWidth: number, maxWidth: number) 
     }
 
     function stopResizing(e: MouseEvent) {
-        console.log('stopResizing')
-
         document.removeEventListener('mousemove', resize);
         document.removeEventListener('mouseup', stopResizing);
     }
