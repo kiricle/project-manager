@@ -74,17 +74,45 @@
       "name": "Task A",
       "description": "Test",
       "status": "done",
-      "createdAt": "2025-04-15T13:23:14.063Z",
-      "asigneeName": "John",
+      "order": 1,
+      "completeTo": "2025-04-15T13:23:14.063Z",
+      "assigneeName": "John",
       "projectId": 2
     },
     {
       "id": 2,
       "name": "Task B",
       "description": "Test",
+      "status": "to_do",
+      "completeTo": "2025-04-15T13:23:14.063Z",
+      "assigneeName": "John",
+      "projectId": 2
+    },
+    {
+      "id": 3,
+      "name": "Task C",
+      "description": "Test",
+      "status": "in_progress",
+      "completeTo": "2025-04-15T13:23:14.063Z",
+      "assigneeName": "John",
+      "projectId": 2
+    },
+    {
+      "id": 4,
+      "name": "Test task",
+      "assigneeName": "Кирилл",
+      "order": 2,
+      "completeTo": "2025-04-18",
       "status": "done",
-      "createdAt": "2025-04-15T13:23:14.063Z",
-      "asigneeName": "John",
+      "projectId": 2
+    },
+    {
+      "id": 5,
+      "name": "Test task 2",
+      "assigneeName": "Кирилл",
+      "order": 2,
+      "completeTo": "2025-04-18",
+      "status": "to_do",
       "projectId": 2
     }
   ]

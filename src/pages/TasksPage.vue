@@ -1,48 +1,47 @@
 <script setup lang="ts">
-import TaskColumn from '@/components/TaskColumn.vue';
+import TaskColumn from '@/components/task/TaskColumn.vue';
 import type { Task, TaskStatus } from '@/models/project';
-import { ref } from 'vue';
+import { useTasksStore } from '@/stores/tasks';
+import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const tasks = ref<Task[]>([
-  {
-    "id": 1,
-    "name": "Task A",
-    "status": "done",
-    "completeTo": "2012-04-23T18:25:43.511Z",
-    "assigneeName": "John",
-    "order": 1,
-    "projectId": 2
-  },
-  {
-    "id": 2,
-    "name": "Task B",
-    "status": "in_progress",
-    "completeTo": "2012-04-23T18:25:43.511Z",
-    "assigneeName": "John",
-    "order": 2,
-    "projectId": 2
-  }
-])
+
+const router = useRouter()
+const projectId = Number(router.currentRoute.value.params.id);
+
+const store = useTasksStore()
 
 const columnMap: Record<TaskStatus, string> = {
   to_do: 'В черзі',
   in_progress: 'В роботі',
   done: 'Готово',
 }
+
+const tasks = computed<Task[]>(() => {
+  return store.tasks.filter((el) => el.projectId === projectId)
+})
+
+onMounted(async () => {
+  await store.fetchData()
+})
+
 </script>
 
 <template>
   <div class="tasks">
     <h1>This is project details page {{ $route.params.id }}</h1>
     <div class="columns_container">
-      <TaskColumn v-for="(status) in columnMap" :key="status" :status="status" :tasks="tasks" />
+      <TaskColumn :project-id="projectId" v-for="(status, key) in columnMap" :key="status"
+        :status="{ value: status, label: key }" :tasks="tasks.filter((el) => el.status === key)" />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 $font-color: #d0d0d0;
-body, #app {
+
+body,
+#app {
   width: 2000px;
 }
 
@@ -54,13 +53,12 @@ body, #app {
   width: min(1500px, 90%);
   background-color: #fff;
   color: #333;
-  // display: flex;
-  // justify-content: space-between;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr 2fr;
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+
   padding: 10px;
   overflow-x: auto;
-  gap: 10px;
 }
 </style>

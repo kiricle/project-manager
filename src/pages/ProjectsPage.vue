@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import CreateProjectForm from '@/components/CreateProjectForm.vue';
-import ProjectsList from '@/components/ProjectsTable.vue';
+import CreateProjectForm from '@/components/projects/CreateProjectForm.vue';
+import ProjectsList from '@/components/projects/ProjectsTable.vue';
 </script>
 
 <template>
