@@ -21,7 +21,6 @@ export const ProjectCreateSchema = z.object({
     description: z.string()
 })
 
-// В завданні не вказано, що потрібно реалізовувати можливість створення нових колонок
 export type ColumnName = "To Do" | "In Progress" | "Done";
 
 export interface Task {
