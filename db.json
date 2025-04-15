@@ -1,21 +1,72 @@
 {
-    "projects": [
-        {
-            "id": 1,
-            "name": "Project A",
-            "description": "Test",
-            "status": "Active",
-            "createdAt": "2023-01-01"
-        }
-    ],
-    "tasks": [
-        {
-            "id": 1,
-            "projectId": 1,
-            "title": "Task 1",
-            "assignee": "John",
-            "status": "To Do",
-            "dueDate": "2023-12-31"
-        }
-    ]
+  "projects": [
+    {
+      "id": "1",
+      "name": "Project A",
+      "description": "Test",
+      "status": "completed",
+      "createdAt": "2023-01-01",
+      "tasksId": []
+    },
+    {
+      "id": "2",
+      "name": "Project B",
+      "description": "John",
+      "status": "in_progress",
+      "createdAt": "2023-12-31",
+      "tasksId": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Project C",
+      "description": "John",
+      "status": "in_progress",
+      "createdAt": "2025-04-14",
+      "tasksId": []
+    },
+    {
+      "id": "4",
+      "name": "Project D",
+      "description": "123",
+      "status": "in_progress",
+      "createdAt": "2025-04-14T18:47:27.758Z",
+      "tasksId": []
+    },
+    {
+      "id": "5",
+      "name": "Project E",
+      "description": "qweqwe123",
+      "status": "in_progress",
+      "createdAt": "2025-04-14T19:42:02.970Z",
+      "tasksId": []
+    },
+    {
+      "id": "11",
+      "name": "Project Z",
+      "description": "qweqwe123",
+      "status": "in_progress",
+      "createdAt": "2025-04-14T19:42:02.970Z",
+      "tasksId": []
+    },
+    {
+      "id": "100",
+      "name": "Project F",
+      "description": "qweqwe123",
+      "status": "in_progress",
+      "createdAt": "2025-04-14T19:42:02.970Z",
+      "tasksId": []
+    },
+    {
+      "id": 101,
+      "name": "Proejct X",
+      "description": "qwe",
+      "status": "in_progress",
+      "createdAt": "2025-04-15T13:23:14.063Z",
+      "tasksId": []
+    }
+  ],
+  "tasks": []
 }
