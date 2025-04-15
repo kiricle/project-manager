@@ -1,6 +1,6 @@
 import { ref } from "vue";
 
-export const useResize = (selector: string) => {
+export const useResize = (selector: string, minWidth: number, maxWidth: number) => {
     const resizingElement = ref<HTMLElement | null>(null)
     const startPosX = ref<number>(0)
 
@@ -25,14 +25,21 @@ export const useResize = (selector: string) => {
         if (!resizingElement.value) return;
         const currentWidth = resizingElement.value.offsetWidth;
         const calculatedWidth = currentWidth + (e.clientX - startPosX.value);
-        if (calculatedWidth < 100) return;
-        if (calculatedWidth > 500) return;
+        if (calculatedWidth < minWidth) return;
+        if (calculatedWidth > maxWidth) return;
 
-        if (e.clientX < startPosX.value) { 
+        const nextOrPrev = (resizingElement.value.nextSibling ? resizingElement.value.nextSibling : resizingElement.value.previousSibling) as HTMLElement;
+        if (!nextOrPrev) return;
+
+        if (e.clientX < startPosX.value) {
             resizingElement.value.style.width = `${currentWidth - (startPosX.value - e.clientX)}px`;
+            nextOrPrev.style.width = `${nextOrPrev.offsetWidth + (startPosX.value - e.clientX)}px`;
         }
 
-        resizingElement.value.style.width = `${currentWidth + (e.clientX - startPosX.value)}px`;
+        if (e.clientX > startPosX.value) {
+            resizingElement.value.style.width = `${currentWidth + (e.clientX - startPosX.value)}px`;
+            nextOrPrev.style.width = `${nextOrPrev.offsetWidth - (e.clientX - startPosX.value)}px`;
+        }
         startPosX.value = e.clientX;
     }
 
