@@ -8,6 +8,8 @@ const props = defineProps<{
 const classes: Record<typeof props.type, string> = {
     completed: 'completed',
     in_progress: 'in_progress',
+    to_do: 'to_do',
+    done: 'completed',
 }
 </script>
 
@@ -19,7 +21,8 @@ const classes: Record<typeof props.type, string> = {
 
 <style lang="scss" scoped>
 $status-active: #4194cc;
-$status-archived: #2ecc71;
+$status-completed: #2ecc71;
+$status-to-do: #e67e22;
 
 .status-badge {
     display: inline-block;
@@ -34,8 +37,13 @@ $status-archived: #2ecc71;
     }
 
     &.completed {
-        background-color: rgba($status-archived, 0.1);
-        color: $status-archived;
+        background-color: rgba($status-completed, 0.1);
+        color: $status-completed;
+    }
+
+    &:to_do {
+        background-color: rgba($status-to-do, 0.1);
+        color: $status-to-do;
     }
 }
 </style>

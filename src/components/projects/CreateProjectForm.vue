@@ -29,7 +29,6 @@ async function createProject() {
         return;
     }
 
-    // Assuming you have a function to create a project in your store or API
     await store.createProject(projectFields.value)
     toast.success('Проект створився успішно!')
     setIsOpen(false)

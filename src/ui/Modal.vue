@@ -15,32 +15,35 @@ const emit = defineEmits<{
 <template>
     <transition name="modal">
         <teleport to='body' v-if="isOpen" class="mask">
-            <div class="container" @click.stop>
-                <div class="header">
-                    <slot name="header">
-                        <h3>{{ title }}</h3>
-                    </slot>
-                    <button class="close" @click="emit('update:isOpen', false)">
-                        &times;
-                    </button>
-                </div>
+            <div class="overlay">
+                <div class="container" @click.stop>
+                    <div class="header">
+                        <slot name="header">
+                            <h3>{{ title }}</h3>
+                        </slot>
+                        <button class="close" @click="emit('update:isOpen', false)">
+                            &times;
+                        </button>
+                    </div>
 
-                <div class="body">
-                    <slot></slot>
-                </div>
+                    <div class="body">
+                        <slot></slot>
+                    </div>
 
-                <div class="footer">
-                    <slot name="footer">
-                        <Button variant="secondary" @click="emit('update:isOpen', false)"> {{ closeText }}</Button>
-                    </slot>
+                    <div class="footer">
+                        <slot name="footer">
+                            <Button variant="secondary" @click="emit('update:isOpen', false)"> {{ closeText }}</Button>
+                        </slot>
+                    </div>
                 </div>
             </div>
+
         </teleport>
     </transition>
 </template>
 
 <style lang="scss" scoped>
-.mask {
+.overlay {
     position: fixed;
     z-index: 9998;
     top: 0;
@@ -51,7 +54,6 @@ const emit = defineEmits<{
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.3s ease;
 }
 
 .container {
