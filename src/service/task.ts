@@ -13,4 +13,10 @@ export class TaskService {
 
         return response.data;
     }
+
+    static async updateTasks(tasks: Task[]) {
+        const response = await client.put<Task[]>('/tasks', tasks)
+
+        return response.data;
+    }
 }

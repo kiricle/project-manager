@@ -1,20 +1,36 @@
 <script setup lang="ts">
 import { useResize } from '@/composables/useResize';
 import type { Task } from '@/models/project';
+import { useTasksStore } from '@/stores/tasks';
 import Resizer from '@/ui/Table/Resizer.vue';
 import Table from '@/ui/Table/Table.vue';
 import { formatDate } from '@/utils/formatDate';
 import { tasksMap } from '@/utils/projectMap';
+import { sort } from '@/utils/sort';
+import { computed } from 'vue';
+import draggable from 'vuedraggable';
 
 const props = defineProps<{
     tasks: Task[];
 }>()
 
+const store = useTasksStore()
+
 const { startResizing } = useResize('.th', 75, 500);
+
+const dragEnd = (e: { oldIndex: number, newIndex: number }) => {
+    if (e.oldIndex === e.newIndex) return;
+    const { status, projectId } = props.tasks[0];
+    store.updateTaskOrder(status, e.oldIndex + 1, e.newIndex + 1, projectId)
+}
+
+const tasksByOrder = computed(() => {
+    return [...props.tasks].sort((a, b) => sort(a.order, b.order, 'asc'))
+})
 </script>
 
 <template>
-    <Table>
+    <Table :without-t-body="true">
         <template #header>
             <tr class="project-row">
                 <th v-for="(column, key) in tasksMap" :key="key" class="th">
@@ -26,15 +42,17 @@ const { startResizing } = useResize('.th', 75, 500);
                 </th>
             </tr>
         </template>
+        <draggable tag="tbody" group="tasks" :list="tasksByOrder" item-key="id" @end="dragEnd">
+            <template #item="{ element: task }: { element: Task }">
+                <tr class="project-row">
+                    <td>{{ task.id }}</td>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.assigneeName }}</td>
+                    <td>{{ formatDate(task.completeTo) }}</td>
+                </tr>
+            </template>
+        </draggable>
 
-        <template #body>
-            <tr class="project-row" v-for="task in tasks" :key="task.id">
-                <td>{{ task.id }}</td>
-                <td>{{ task.name }}</td>
-                <td>{{ task.assigneeName }}</td>
-                <td>{{ formatDate(task.completeTo) }}</td>
-            </tr>
-        </template>
     </Table>
 </template>
 
@@ -46,6 +64,15 @@ $border-color: #e0e0e0;
 .header_cell_divider {
     justify-content: space-between;
     display: flex;
+}
+
+.ghost-row {
+    opacity: 0.5;
+    background: #c8ebfb;
+}
+
+.chosen-row {
+    transform: rotate(3deg);
 }
 
 .th {

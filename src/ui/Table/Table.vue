@@ -1,4 +1,8 @@
 <script setup lang="ts">
+const props = defineProps<{
+    withoutTBody?: boolean;
+}>()
+console.log(props.withoutTBody)
 </script>
 
 <template>
@@ -7,9 +11,10 @@
             <thead>
                 <slot name="header"></slot>
             </thead>
-            <tbody>
+            <tbody v-if="!withoutTBody">
                 <slot name="body"></slot>
-            </tbody>
+            </tbody>'
+            <slot v-if="withoutTBody"></slot>
         </table>
     </div>
 </template>

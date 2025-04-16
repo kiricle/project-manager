@@ -60,7 +60,7 @@
       "tasksId": []
     },
     {
-      "id": 101,
+      "id": "101",
       "name": "Proejct X",
       "description": "qwe",
       "status": "in_progress",
@@ -70,7 +70,7 @@
   ],
   "tasks": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Task A",
       "description": "Test",
       "status": "done",
@@ -80,25 +80,27 @@
       "projectId": 2
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Task B",
       "description": "Test",
       "status": "to_do",
+      "order": 1,
       "completeTo": "2025-04-15T13:23:14.063Z",
       "assigneeName": "John",
       "projectId": 2
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Task C",
       "description": "Test",
       "status": "in_progress",
+      "order": 1,
       "completeTo": "2025-04-15T13:23:14.063Z",
       "assigneeName": "John",
       "projectId": 2
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Test task",
       "assigneeName": "Кирилл",
       "order": 2,
@@ -107,12 +109,30 @@
       "projectId": 2
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Test task 2",
       "assigneeName": "Кирилл",
       "order": 2,
       "completeTo": "2025-04-18",
       "status": "to_do",
+      "projectId": 2
+    },
+    {
+      "id": 6,
+      "name": "Завдання 2123",
+      "assigneeName": "123",
+      "order": 2,
+      "completeTo": "2025-05-01",
+      "status": "in_progress",
+      "projectId": 2
+    },
+    {
+      "id": 7,
+      "name": "Task 3",
+      "assigneeName": "qwe",
+      "order": 3,
+      "completeTo": "2025-04-18",
+      "status": "done",
       "projectId": 2
     }
   ]
