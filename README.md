@@ -3,7 +3,7 @@
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Project Setup
-### Create next .env file in the root folder: 
+### Create next .env file in the root folder: (no need because it's not ignored:D)
 ```sh
 VITE_API_URL=http://localhost:3001
 ```
