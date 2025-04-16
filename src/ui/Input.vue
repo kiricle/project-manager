@@ -31,19 +31,6 @@ defineEmits(['update:modelValue'])
     color: #334155;
 }
 
-.input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.375rem;
-    transition: border-color 0.2s;
-
-    &:focus-within {
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 1px #3b82f6;
-    }
-}
 
 .input-element {
     width: 100%;
@@ -52,7 +39,7 @@ defineEmits(['update:modelValue'])
     outline: none;
     background: transparent;
     font-size: 1rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #919191;
     border-radius: 0.375rem;
 
     &:focus-within {
