@@ -2,12 +2,14 @@
 import { useResize } from '@/composables/useResize';
 import type { Task } from '@/models/project';
 import { useTasksStore } from '@/stores/tasks';
+import Button from '@/ui/Button.vue';
 import Resizer from '@/ui/Table/Resizer.vue';
 import Table from '@/ui/Table/Table.vue';
 import { formatDate } from '@/utils/formatDate';
 import { tasksMap } from '@/utils/projectMap';
 import { sort } from '@/utils/sort';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import { toast } from 'vue3-toastify';
 import draggable from 'vuedraggable';
 
 const props = defineProps<{
@@ -19,30 +21,54 @@ const store = useTasksStore()
 const { startResizing } = useResize('.th', 75, 500);
 
 const dragEnd = (e: { oldIndex: number, newIndex: number }) => {
+    if (sortBy.value !== 'order' && orderBy.value !== 'asc') return;
     if (e.oldIndex === e.newIndex) return;
     const { status, projectId } = props.tasks[0];
     store.updateTaskOrder(status, e.oldIndex + 1, e.newIndex + 1, projectId)
 }
 
-const tasksByOrder = computed(() => {
-    return [...props.tasks].sort((a, b) => sort(a.order, b.order, 'asc'))
+const sortBy = ref<keyof Pick<Task, 'completeTo' | 'order'>>('order');
+const orderBy = ref<'asc' | 'desc'>('asc')
+
+const sortedTasks = computed(() => {
+    return [...props.tasks].sort((a, b) => sort(a[sortBy.value], b[sortBy.value], orderBy.value))
 })
+
+const changeSort = (key: keyof typeof tasksMap) => {
+    if (key !== 'completeTo') {
+        toast.warning('Сортування по даті створення не підтримується')
+        return;
+    }
+
+    if (sortBy.value === key) {
+        orderBy.value = orderBy.value === 'asc' ? 'desc' : 'asc'
+    } else {
+        sortBy.value = key
+        orderBy.value = 'asc'
+    }
+}
+
+const toDefaultSort = () => {
+    sortBy.value = 'order'
+    orderBy.value = 'asc'
+}
 </script>
 
 <template>
+    <Button variant="danger" @click="toDefaultSort" v-if="sortBy !== 'order'">Скинути сортування</Button>
     <Table :without-t-body="true">
         <template #header>
             <tr class="project-row">
-                <th v-for="(column, key) in tasksMap" :key="key" class="th">
+                <th @click="changeSort(key)" v-for="(column, key) in tasksMap" :key="key" class="th">
                     <div class="header_cell_divider">
-                        <p>{{ column }}</p>
+                        <p :class="{ 'active': sortBy === key, 'desc': orderBy === 'desc' }">{{ column }}</p>
                         <Resizer @click.stop @mousedown="startResizing"
                             v-if="key !== Object.keys(tasksMap)[Object.keys(tasksMap).length - 1]" />
                     </div>
                 </th>
             </tr>
         </template>
-        <draggable tag="tbody" group="tasks" :list="tasksByOrder" item-key="id" @end="dragEnd">
+        <draggable tag="tbody" group="tasks" :list="sortedTasks" item-key="id" @end="dragEnd">
             <template #item="{ element: task }: { element: Task }">
                 <tr class="project-row">
                     <td>{{ task.id }}</td>

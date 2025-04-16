@@ -58,7 +58,8 @@ export const useTasksStore = defineStore('tasks', () => {
 
 
         tasks.value = tasks.value.map((task) => changedIdsMap[task.id] ? changedIdsMap[task.id] : task)
-        TaskService.updateTasks(tasks.value)
+        // json-server має обмежені можливості, тому без цієї логіки
+        //TaskService.updateTasks(tasks.value)
     }
 
     return {
