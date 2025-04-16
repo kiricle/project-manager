@@ -26,7 +26,6 @@ const orderBy = ref<'asc' | 'desc'>('asc')
 const assigneeName = ref('')
 
 const dragEnd = (e: { oldIndex: number, newIndex: number }) => {
-    console.log(sortBy.value, orderBy.value, assigneeName.value)
     if (sortBy.value !== 'order' || orderBy.value !== 'asc' || assigneeName.value !== '') {
         toast.warning('Змінювати порядок можна тільки без сортування та фільтрації')
         return

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
     withoutTBody?: boolean;
 }>()
-console.log(props.withoutTBody)
 </script>
 
 <template>
