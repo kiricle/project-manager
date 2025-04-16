@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useResize } from '@/composables/useResize';
-import type { Project } from '@/models/project';
+import type { Project, ProjectStatus } from '@/models/project';
 import { useProjectsStore } from '@/stores/projects';
 import Badge from '@/ui/Badge.vue';
+import Input from '@/ui/Input.vue';
 import Resizer from '@/ui/Table/Resizer.vue';
 import Table from '@/ui/Table/Table.vue';
 import { formatDate } from '@/utils/formatDate';
@@ -29,10 +30,6 @@ type SortBy = Exclude<keyof Project, 'description' | 'createdAt'>
 const sortBy = ref<SortBy>('id')
 const orderBy = ref<'asc' | 'desc'>('desc')
 
-const sortedProjects = computed(() => {
-    return [...store.projects].sort((a, b) => sort(a[sortBy.value], b[sortBy.value], orderBy.value))
-})
-
 const changeSort = (key: keyof typeof projectMap) => {
     if (key === 'createdAt') {
         toast.warning('Сортування по даті створення не підтримується')
@@ -49,9 +46,40 @@ const changeSort = (key: keyof typeof projectMap) => {
 
 const { startResizing } = useResize('.th', 100, 500);
 
+
+const projectName = ref<string>('')
+const status = ref<ProjectStatus | ''>('')
+
+const sortedAndFilteredProjects = computed(() => {
+    return [...store.projects].filter((project) => {
+        const doesInclude = project.name.toLowerCase().includes(projectName.value.toLowerCase())
+        const statusMatch = project.status === status.value
+
+        if (status.value !== '' && projectName.value !== '') {
+            return statusMatch && doesInclude
+        }
+
+        if (projectName.value !== '') {
+            return doesInclude
+        }
+
+        if (status.value !== '') {
+            return statusMatch
+        }
+
+        return true
+    }).sort((a, b) => sort(a[sortBy.value], b[sortBy.value], orderBy.value))
+})
 </script>
 
 <template>
+    <div class="search_container">
+        <Input v-model:model-value="projectName" label="Пошук по назві" name="projectName" type="search" />
+        <select v-model="status" name="status" id="status">
+            <option v-for="(item, key) in statusMap" :key="key" :value="key">{{ item }}</option>
+            <option value="">Всі статуси</option>
+        </select>
+    </div>
     <Table>
         <template #header>
             <tr>
@@ -65,7 +93,7 @@ const { startResizing } = useResize('.th', 100, 500);
             </tr>
         </template>
         <template #body>
-            <tr @click="goToProject(project.id)" class="project-row" v-for="project in sortedProjects"
+            <tr @click="goToProject(project.id)" class="project-row" v-for="project in sortedAndFilteredProjects"
                 :key="project.id">
                 <td>{{ project.id }}</td>
                 <td>{{ project.name }}</td>
@@ -85,6 +113,11 @@ const { startResizing } = useResize('.th', 100, 500);
 $primary-color: #4a6fa5;
 $hover-color: #f5f7fa;
 $border-color: #e0e0e0;
+
+.search_container {
+    background-color: #fff;
+    padding: 10px;
+}
 
 .header_cell_divider {
     justify-content: space-between;
