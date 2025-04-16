@@ -52,15 +52,22 @@ const status = ref<ProjectStatus | ''>('')
 
 const sortedAndFilteredProjects = computed(() => {
     return [...store.projects].filter((project) => {
-        if (status.value === '') {
-            return project.name.includes(projectName.value)
+        const doesInclude = project.name.toLowerCase().includes(projectName.value.toLowerCase())
+        const statusMatch = project.status === status.value
+
+        if (status.value !== '' && projectName.value !== '') {
+            return statusMatch && doesInclude
         }
 
         if (projectName.value !== '') {
-            return project.status === status.value && project.name.includes(projectName.value)
+            return doesInclude
         }
 
-        return project.status === status.value
+        if (status.value !== '') {
+            return statusMatch
+        }
+
+        return true
     }).sort((a, b) => sort(a[sortBy.value], b[sortBy.value], orderBy.value))
 })
 </script>
