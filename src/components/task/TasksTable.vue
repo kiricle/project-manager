@@ -3,6 +3,7 @@ import { useResize } from '@/composables/useResize';
 import type { Task } from '@/models/project';
 import { useTasksStore } from '@/stores/tasks';
 import Button from '@/ui/Button.vue';
+import Input from '@/ui/Input.vue';
 import Resizer from '@/ui/Table/Resizer.vue';
 import Table from '@/ui/Table/Table.vue';
 import { formatDate } from '@/utils/formatDate';
@@ -20,17 +21,28 @@ const store = useTasksStore()
 
 const { startResizing } = useResize('.th', 75, 500);
 
+const sortBy = ref<keyof Pick<Task, 'completeTo' | 'order'>>('order');
+const orderBy = ref<'asc' | 'desc'>('asc')
+const assigneeName = ref('')
+
 const dragEnd = (e: { oldIndex: number, newIndex: number }) => {
-    if (sortBy.value !== 'order' && orderBy.value !== 'asc') return;
+    console.log(sortBy.value, orderBy.value, assigneeName.value)
+    if (sortBy.value !== 'order' || orderBy.value !== 'asc' || assigneeName.value !== '') {
+        toast.warning('Змінювати порядок можна тільки без сортування та фільтрації')
+        return
+    }
     if (e.oldIndex === e.newIndex) return;
     const { status, projectId } = props.tasks[0];
     store.updateTaskOrder(status, e.oldIndex + 1, e.newIndex + 1, projectId)
 }
 
-const sortBy = ref<keyof Pick<Task, 'completeTo' | 'order'>>('order');
-const orderBy = ref<'asc' | 'desc'>('asc')
+const sortedAndFilteredTasks = computed(() => {
+    if (assigneeName.value !== '') {
+        return [...props.tasks]
+            .filter((task) => task.assigneeName.includes(assigneeName.value))
+            .sort((a, b) => sort(a[sortBy.value], b[sortBy.value], orderBy.value))
+    }
 
-const sortedTasks = computed(() => {
     return [...props.tasks].sort((a, b) => sort(a[sortBy.value], b[sortBy.value], orderBy.value))
 })
 
@@ -52,10 +64,14 @@ const toDefaultSort = () => {
     sortBy.value = 'order'
     orderBy.value = 'asc'
 }
+
+
 </script>
 
 <template>
     <Button variant="danger" @click="toDefaultSort" v-if="sortBy !== 'order'">Скинути сортування</Button>
+    <Input name="assignee" v-model:model-value="assigneeName" label="Пошук за виконавцем" type="search"
+        placeholder="Пошук за виконавцем" />
     <Table :without-t-body="true">
         <template #header>
             <tr class="project-row">
@@ -68,7 +84,7 @@ const toDefaultSort = () => {
                 </th>
             </tr>
         </template>
-        <draggable tag="tbody" group="tasks" :list="sortedTasks" item-key="id" @end="dragEnd">
+        <draggable tag="tbody" group="tasks" :list="sortedAndFilteredTasks" item-key="id" @end="dragEnd">
             <template #item="{ element: task }: { element: Task }">
                 <tr class="project-row">
                     <td>{{ task.id }}</td>
